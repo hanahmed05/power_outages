@@ -1,3 +1,25 @@
 remote_theme: pages-themes/minimal@v0.2.0
 plugins:
-- jekyll-remote-theme # add this line to the plugins list if you already have one
+  - jekyll-remote-theme # Required for using remote themes
+
+title: "Power Outages Analysis"
+description: "Interactive visualizations and insights on power outages."
+baseurl: "" # Leave blank unless hosting in a subdirectory
+url: "https://hanaahmed05.github.io/power_outages" # Replace with your GitHub Pages URL
+
+# Metadata (optional)
+author: 
+  name: "Your Name"
+  email: "your.email@example.com"
+
+# Navigation (optional)
+collections:
+  pages:
+    output: true
+
+# Markdown settings
+markdown: kramdown
+
+# Exclude files or directories from being processed by Jekyll
+exclude:
+  - README.md
