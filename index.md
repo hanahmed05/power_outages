@@ -74,17 +74,17 @@ Upon loading the dataset into a DataFrame, the following issues were identified:
 1. The `variables` column consisted entirely of `NaN` values across all rows and contributed no useful information.
 2. The `OBS` column, which served as an outdated index, was redundant for our analysis.
 3. The first row contained units for each column, rather than actual data.
-4. Many of the quantitative features in this dataset are simply objects rather than correctly labelled as float64. 
+4. Many of the quantitative features in this dataset are simply objects rather than correctly labelled as `float64`. 
 
 **Action Taken:**
 - Removed the `variables` and `OBS` columns using the `.drop()` method.
 - Deleted the first row to ensure the dataset contained only relevant data entries.
-- Created a new dataframe that has the correct datatypes assigned to each feature using the convert_to_float function
+- Created a new dataframe that has the correct datatypes assigned to each feature using the `convert_to_float` function
 
 
 Next, we standardized the units of our features, particularly our monetary features, into more comprehensible terms. We put all of the variables measuring total GSP of a state or a sector into units of "billions of dollars" to make our future plots more legible.
 
-Lastly, we checked if any of the columns relevant to our question (POPPCT_UC, TOTAL.REALGSP, RES.SALES, etc.) had any missing values. The RES.SALES feature, which describes the electricity consumption in the residential sector in units of megawatt-hours, has 22 missing values.
+Lastly, we checked if any of the columns relevant to our question (`POPPCT_UC`, `TOTAL.REALGSP`, `RES.SALES`, etc.) had any missing values. The `RES.SALES` feature, which describes the electricity consumption in the residential sector in units of megawatt-hours, has 22 missing values.
 
 ### Conditional Probabilistic Imputation
 
@@ -92,11 +92,14 @@ To resolve the issue of the missing values in the `RES.SALES` column, we utilize
 
 To ensure the dataset was suitable for analysis, we examined the `RES.SALES` feature for missing values across all states. The goal was to verify that each state had some non-missing entries for `RES.SALES`, enabling valid conditional imputation. To assess this, we created a summary table that displayed the total number of entries for each state and the number of entries with missing `RES.SALES` values.
 
-The analysis revealed that nearly all states had sufficient valid entries for `RES.SALES`, confirming that conditional imputation could be performed. However, the state of Alaska presented a unique challenge: it had only one entry in the entire dataset, and the `RES.SALES` value for this entry was missing. Furthermore, most features for Alaska contained missing values, making its inclusion in the dataset impractical.
+The analysis revealed that nearly all states had sufficient valid entries for `RES.SALES`, confirming that conditional imputation could be performed. However, the state of **Alaska** presented a unique challenge: it had only one entry in the entire dataset, and the `RES.SALES` value for this entry was missing. Furthermore, most features for Alaska contained missing values, making its inclusion in the dataset impractical.
 
 Given this, we decided to remove Alaska from the dataset. Since it contributed only a single incomplete data point out of nearly 1,540 total entries, its removal would not significantly impact the dataset's integrity or future modeling efforts. Including such a sparse datapoint would likely hinder extrapolation and add noise to the analysis.
 
-With Alaska excluded, we proceeded with conditional probabilistic imputation for the `RES.SALES` column. This step ensured that all missing values in this feature were effectively addressed while maintaining the relationships within the data. After this process, the `RES.SALES` feature no longer contained any missing values, enabling us to move confidently to the next stage of exploratory data analysis, focusing on univariate and bivariate analysis.
+With Alaska excluded, we proceeded with conditional probabilistic imputation for the `RES.SALES` column. This step ensured that all missing values in this feature were effectively addressed while maintaining the relationships within the data. After this process, the `RES.SALES` feature no longer contained any missing values, enabling us to move confidently to the next stage of exploratory data analysis. 
+
+Below displays the head of our cleaned DataFrame:
+
 
 
 ---
