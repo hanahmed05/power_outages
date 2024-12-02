@@ -100,6 +100,14 @@ With Alaska excluded, we proceeded with conditional probabilistic imputation for
 
 Below displays the head of our cleaned DataFrame:
 
+<iframe
+  src="assets/outages_head.html"
+  width="800"
+  height="300"
+  frameborder="0"
+></iframe>
+
+
 ## Univariate Analysis
 
 ### Univariate Analysis of Total Real GSP (TOTAL.REALGSP)
@@ -113,6 +121,7 @@ With our freshly cleaned dataset, we can now investigate columns of interest thr
   height="600"
   frameborder="0"
 ></iframe>
+
 
 In the above figure, we have created a box plot to represent the distrubtion of total real GSP in this dataset. Unfortunately, it is unclear as to whether the creators of this dataset included more power outage entries in states that had lower GSPs or if in general the GSPs of U.S. states skew left towards lower values.
 
