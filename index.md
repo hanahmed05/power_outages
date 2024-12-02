@@ -100,7 +100,23 @@ With Alaska excluded, we proceeded with conditional probabilistic imputation for
 
 Below displays the head of our cleaned DataFrame:
 
+## Univariate Analysis
 
+### Univariate Analysis of Total Real GSP (TOTAL.REALGSP)
+
+With our freshly cleaned dataset, we can now investigate columns of interest through univariate analysis. In this section, we will investigate the `TOTAL.REALGSP`, `POPPCT_UC`, and the `RES.SALES` columns of our dataset.
+
+
+<iframe
+  src="assets/total_real_gsp.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+In the above figure, we have created a box plot to represent the distrubtion of total real GSP in this dataset. Unfortunately, it is unclear as to whether the creators of this dataset included more power outage entries in states that had lower GSPs or if in general the GSPs of U.S. states skew left towards lower values.
+
+If we want to perform more accurate analysis on the distribution of total real GSP, we need to average the GSP values across multiple entries for a particular state so that we're left with only one data point per state.
 
 ---
 
