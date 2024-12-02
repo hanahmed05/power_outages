@@ -4,18 +4,3 @@ plugins:
 
 title: "Power Outages Analysis" # Replace with your desired title
 description: "Exploring the socioeconomic and geographical impacts on electricity consumption."
-
-authors:
-  - Hana Ahmed ([hanahmed@umich.edu](mailto:hanahmed@umich.edu))
-  - Aditya Ashok ([ashoka@umich.edu](mailto:ashoka@umich.edu))
-toc:
-  - name: "Introduction"
-    link: "#introduction"
-  - name: "Data Cleaning and Exploratory Data Analysis"
-    link: "#data-cleaning-and-exploratory-data-analysis"
-  - name: "Framing a Prediction Problem"
-    link: "#framing-a-prediction-problem"
-  - name: "Baseline Model"
-    link: "#baseline-model"
-  - name: "Final Model"
-    link: "#final-model"
