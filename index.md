@@ -49,7 +49,6 @@ By integrating these insights, this report aims to provide actionable recommenda
 For more details on the dataset, refer to the original publication:  
 [Power Outages Dataset](https://www.sciencedirect.com/science/article/pii/S2352340918307182)
 
-[Data Cleaning and Exploratory Data Analysis](data-cleaning.md)
 
 
 ---
