@@ -19,19 +19,17 @@ title: Power Outages
 
 # Introduction
 
-This report explores the **Power Outages Dataset**, which consists of **1,536 rows** and **57 features**, providing a comprehensive view of power outages across the United States. Compiled by Sayanti Mukherjee, Roshanak Nateghi, and Makaran Hastak, this dataset is a valuable resource for understanding the interplay between socioeconomic factors and the resilience of the U.S. electrical grid.
+In this report, we will explore the **Power Outages** dataset composed by Sayanti Mukherjee, Roshanak Nateghi, and Makaran Hastak and perform quantitative analysis on a selection of its provided features. This dataset contains **1536 rows** or entries and **57 columns** or features.
 
-The motivation for analyzing this dataset stems from the growing importance of addressing how climate change and economic disparities affect power infrastructure. By examining this data, we aim to uncover trends and relationships that can inform utility companies, policymakers, and stakeholders about equitable energy distribution and the effects of demographic and economic factors on electricity usage.
-
+The motivation for choosing the power outages dataset stems from our desire to gain a better understanding of how socioeconomic factors play a role in the manufacturing and maintanence of United States' electrical grid. This will help us gain a better understanding of what groups may be at risk of suffering from the increasingly devestating effects of climate change and how utility companies respond to more marginal socioeconomic and geographical groups in the U.S.
 ---
 
 ## Investigative Question
 
-This report is guided by the following research question:
+We decided to choose a question which would elucidate how utility companies might choose which states to expand into and how socioeconomic/geographical features may affect the prevalencce of electricity usage in a state.
 
-**How do a state's total gross state product and its population proportion in urban clusters affect the total residential electricity sales?**
+The question that this report seeks to answer is the following: **How do a state's total gross state product and its population proportion in urban clusters affect the total residential electricity sales?**
 
-This question seeks to shed light on how socioeconomic and geographical factors influence electricity consumption, helping utility companies prioritize investments and improve energy accessibility.
 
 ---
 
@@ -67,6 +65,26 @@ For more details on the dataset, refer to the original publication:
 # Data Cleaning and Exploratory Data Analysis
 
 ## Cleaning our Data
+
+To ensure our dataset was prepared for meaningful analysis, several data cleaning steps were undertaken. Each step addressed specific issues arising from the data generation process, ensuring that the final dataset was consistent, accurate, and ready for exploration. Below, we describe these steps in detail:
+
+### Preliminary Data Cleaning: Removing Redundant or Useless Elements
+Upon loading the dataset into a DataFrame, the following issues were identified:
+1. The `variables` column consisted entirely of `NaN` values across all rows and contributed no useful information.
+2. The `OBS` column, which served as an outdated index, was redundant for our analysis.
+3. The first row contained units for each column, rather than actual data.
+4. Many of the quantitative features in this dataset are simply objects rather than correctly labelled as float64. 
+
+**Action Taken:**
+- Removed the `variables` and `OBS` columns using the `.drop()` method.
+- Deleted the first row to ensure the dataset contained only relevant data entries.
+- Created a new dataframe that has the correct datatypes assigned to each feature using the convert_to_float function
+
+
+Next we standardized the units of our features, particularly our monetary features, into more comprehensible terms. We put all of the variables measuring total GSP of a state or a sector into units of "billions of dollars" to make our future plots more legible.
+
+Lastly, we checked if any of the columns relevant to our question (POPPCT_UC, TOTAL.REALGSP, RES.SALES, etc.) had any missing values. The RES.SALES feature, which describes the electricity consumption in the residential sector in units of megawatt-hours, has 22 missing values.
+
 
 ---
 
