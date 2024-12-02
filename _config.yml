@@ -4,3 +4,9 @@ plugins:
 
 title: "Power Outages Analysis" # Replace with your desired title
 description: "Exploring the socioeconomic and geographical impacts on electricity consumption."
+
+author:
+  - name: "Hana Ahmed"
+    email: "hanahmed@umich.edu"
+  - name: "Aditya Ashok"
+    email: "ashoka@umich.edu"
