@@ -1,6 +1,27 @@
 ---
 layout: default
-title: Introduction
+title: Power Outages Analysis
+---
+
+# Power Outages Analysis
+
+**Exploring the socioeconomic and geographical impacts on electricity consumption**
+
+---
+
+## Authors
+- Hana Ahmed ([hanahmed@umich.edu](mailto:hanahmed@umich.edu))  
+- Aditya Ashok ([ashoka@umich.edu](mailto:ashoka@umich.edu))  
+
+---
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis)
+- [Framing a Prediction Problem](#framing-a-prediction-problem)
+- [Baseline Model](#baseline-model)
+- [Final Model](#final-model)
+
 ---
 
 # Introduction
