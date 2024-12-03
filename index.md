@@ -112,8 +112,9 @@ Below displays the head of our cleaned DataFrame:
 
 ### Univariate Analysis of Total Real GSP (TOTAL.REALGSP)
 
-With our freshly cleaned dataset, we can now investigate columns of interest through univariate analysis. In this section, we will investigate the `TOTAL.REALGSP`, `POPPCT_UC`, and the `RES.SALES` columns of our dataset.
+With our freshly cleaned dataset, we investigated columns of interest through univariate analysis. In this section, we examined the `POPPCT_UC`column of our dataset.
 
+The column data for the percentage of the population in urban clusters is analyzed below. The same method as earlier was applied, where the raw series was first plotted, followed by the series averaged conditionally across states.
 
 <iframe
   src="assets/total_real_gsp.html"
@@ -123,9 +124,31 @@ With our freshly cleaned dataset, we can now investigate columns of interest thr
 ></iframe>
 
 
-In the above figure, we have created a box plot to represent the distrubtion of total real GSP in this dataset. Unfortunately, it is unclear as to whether the creators of this dataset included more power outage entries in states that had lower GSPs or if in general the GSPs of U.S. states skew left towards lower values.
+## Bivariate Analysis 
 
-If we want to perform more accurate analysis on the distribution of total real GSP, we need to average the GSP values across multiple entries for a particular state so that we're left with only one data point per state.
+# Framing a Prediction Problem
+
+## Prediction Problem
+The goal of this prediction problem is to predict the **peak demand loss (DEMAND.LOSS.MW)** during a power outage using features related to the outage, such as **outage duration (OUTAGE.DURATION)** and **urban land area percentage (AREAPCT_URBAN)**. 
+This is a **regression problem** since the response variable, `DEMAND.LOSS.MW`, is a continuous numerical value representing the peak demand loss in megawatts (MW).
+
+## Response Variable
+- **Response Variable**: `DEMAND.LOSS.MW` (Peak demand loss during a power outage in megawatts)
+- **Reason for Selection**: Predicting peak demand loss is essential for understanding and mitigating the impact of power outages on energy infrastructure. It helps stakeholders make data-driven decisions to prioritize resources during outages and improve grid resilience.
+
+## Evaluation Metric
+- **Chosen Metric**: Mean Absolute Error (MAE)
+- **Reason for Selection**: 
+  - MAE was chosen because it provides a straightforward measure of the average magnitude of errors in the predictions without considering their direction.
+  - Unlike Mean Squared Error (MSE), MAE treats all prediction errors equally, avoiding the issue of heavily penalizing outliers, which may be expected in real-world datasets like power outages.
+
+## Justification of Features
+The features used to train the model were selected based on their availability at the time of prediction:
+- **OUTAGE.DURATION**: The total duration of the outage, which is likely known during or after the event.
+- **AREAPCT_URBAN**: The percentage of the affected area classified as urban, which is a static feature and available beforehand.
+
+Features that would not be available at the time of prediction, such as future demand patterns, were excluded to ensure the model adheres to realistic scenarios. This approach ensures that the model is designed for practical use cases and avoids data leakage.
+
 
 ---
 
