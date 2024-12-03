@@ -126,6 +126,10 @@ The column data for the percentage of the population in urban clusters is analyz
 
 ## Bivariate Analysis 
 
+
+## Aggregate Statistics
+
+
 # Framing a Prediction Problem
 
 ## Prediction Problem
