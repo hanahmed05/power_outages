@@ -164,25 +164,28 @@ This analysis partially answers our investigative question by revealing that eco
 # Framing a Prediction Problem
 
 ## Prediction Problem
-The goal of this prediction problem is to predict the **peak demand loss (DEMAND.LOSS.MW)** during a power outage using features related to the outage, such as **outage duration (OUTAGE.DURATION)** and **urban land area percentage (AREAPCT_URBAN)**. 
-This is a **regression problem** since the response variable, `DEMAND.LOSS.MW`, is a continuous numerical value representing the peak demand loss in megawatts (MW).
+The goal of this analysis is to predict the **total residential electricity sales (`RES.SALES`)** for a state based on its **total gross state product (`TOTAL.REALGSP`)** and **population proportion in urban clusters (`POPPCT_UC`)**.
 
-## Response Variable
-- **Response Variable**: `DEMAND.LOSS.MW` (Peak demand loss during a power outage in megawatts)
-- **Reason for Selection**: Predicting peak demand loss is essential for understanding and mitigating the impact of power outages on energy infrastructure. It helps stakeholders make data-driven decisions to prioritize resources during outages and improve grid resilience.
+This is a **regression problem** because the response variable, `RES.SALES`, is a continuous numerical value representing the total residential electricity sales in megawatt-hours (MWh).
 
-## Evaluation Metric
+### Response Variable
+- **Response Variable**: `RES.SALES` (Total Residential Electricity Sales in Megawatt-Hours)
+- Residential electricity sales are a key indicator of energy consumption patterns, which are directly impacted by economic and urbanization factors. Understanding this relationship allows for better energy resource planning and allocation.
+
+### Justification of Features
+The features used for prediction were carefully selected based on their relevance and availability at the time of prediction:
+- **TOTAL.REALGSP**: Total gross state product is a static economic indicator and a strong predictor of energy consumption. It is readily available for all states.
+- **POPPCT_UC**: The proportion of the population residing in urban clusters reflects urbanization levels, which significantly influence residential electricity usage.
+
+Features unavailable at the time of prediction, such as future consumption patterns or external economic changes, were excluded to ensure that the model aligns with realistic use cases. This approach ensures the predictions remain practical and deployable in real-world scenarios.
+
+
+### Evaluation Metric for Our Model
 - **Chosen Metric**: Mean Absolute Error (MAE)
-- **Reason for Selection**: 
-  - MAE was chosen because it provides a straightforward measure of the average magnitude of errors in the predictions without considering their direction.
-  - Unlike Mean Squared Error (MSE), MAE treats all prediction errors equally, avoiding the issue of heavily penalizing outliers, which may be expected in real-world datasets like power outages.
+- MAE provides a simple and interpretable measure of average prediction error in the same unit as the target variable.
+- Unlike Mean Squared Error (MSE), MAE treats all errors equally, avoiding the disproportionate influence of outliers.
+- Since the focus is on the magnitude of errors rather than their direction, MAE is well-suited for this prediction problem.
 
-## Justification of Features
-The features used to train the model were selected based on their availability at the time of prediction:
-- **OUTAGE.DURATION**: The total duration of the outage, which is likely known during or after the event.
-- **AREAPCT_URBAN**: The percentage of the affected area classified as urban, which is a static feature and available beforehand.
-
-Features that would not be available at the time of prediction, such as future demand patterns, were excluded to ensure the model adheres to realistic scenarios. This approach ensures that the model is designed for practical use cases and avoids data leakage.
 
 
 ---
