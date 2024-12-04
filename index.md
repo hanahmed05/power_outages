@@ -63,20 +63,19 @@ For more details on the dataset, refer to the original publication:
 [Power Outages Dataset](https://www.sciencedirect.com/science/article/pii/S2352340918307182)
 
 
-# Data Cleaning and Exploratory Data Analysis
 
-## Cleaning our Data
+# Cleaning our Data
 
 To ensure our dataset was prepared for meaningful analysis, several data cleaning steps were undertaken. Each step addressed specific issues arising from the data generation process, ensuring that the final dataset was consistent, accurate, and ready for exploration. Below, we describe these steps in detail:
 
-### Preliminary Data Cleaning: Removing Redundant or Useless Elements
+## Preliminary Data Cleaning: Removing Redundant or Useless Elements
 Upon loading the dataset into a DataFrame, the following issues were identified:
 1. The `variables` column consisted entirely of `NaN` values across all rows and contributed no useful information.
 2. The `OBS` column, which served as an outdated index, was redundant for our analysis.
 3. The first row contained units for each column, rather than actual data.
 4. Many of the quantitative features in this dataset are simply objects rather than correctly labelled as `float64`. 
 
-**Action Taken:**
+**Action Taken to Clean Data:**
 - Removed the `variables` and `OBS` columns using the `.drop()` method.
 - Deleted the first row to ensure the dataset contained only relevant data entries.
 - Created a new dataframe that has the correct datatypes assigned to each feature using the `convert_to_float` function
@@ -86,7 +85,7 @@ Next, we standardized the units of our features, particularly our monetary featu
 
 Lastly, we checked if any of the columns relevant to our question (`POPPCT_UC`, `TOTAL.REALGSP`, `RES.SALES`, etc.) had any missing values. The `RES.SALES` feature, which describes the electricity consumption in the residential sector in units of megawatt-hours, has 22 missing values.
 
-### Conditional Probabilistic Imputation
+## Our Use of Conditional Probabilistic Imputation
 
 To resolve the issue of the missing values in the `RES.SALES` column, we utilized conditional probabilistic imputation. We chose to use this method of imputation since we know that that the total sales of electricity in the residential sector  greatly differs from state to state due to population and urbanization metrics, meaning that it is necessary that we group by state before performing imputation. Additionally, probabilistic imputation was used to avoid introducing bias around the center of the `RES.SALES` data. Using simpler methods, such as mean imputation, would have created artificial spikes in the data distribution, misrepresenting the variability present in the original dataset. By employing conditional probabilistic imputation, we ensured that the integrity and natural spread of the data were preserved.
 
@@ -108,23 +107,55 @@ Below displays the head of our cleaned DataFrame:
 ></iframe>
 
 
-## Univariate Analysis
-
-### Univariate Analysis of Total Real GSP (TOTAL.REALGSP)
-
-With our freshly cleaned dataset, we investigated columns of interest through univariate analysis. In this section, we examined the `POPPCT_UC`column of our dataset.
-
-The column data for the percentage of the population in urban clusters is analyzed below. The same method as earlier was applied, where the raw series was first plotted, followed by the series averaged conditionally across states.
-
-<iframe
-  src="assets/total_real_gsp.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
+# Exploratory Data Analysis 
 
 
-## Bivariate Analysis 
+## Univariate Analysis of Percentage Population in Urban Clusters (POPPCT_UC)
+
+To understand the distribution of the percentage of the population living in urban clusters across U.S. states, we performed a univariate analysis on the `POPPCT_UC` feature. The goal of this analysis was to examine how urban cluster population percentages vary across states and interpret any patterns or trends that emerge.
+
+We first visualized the raw distribution of the `POPPCT_UC` values using a box plot. This plot provided insights into the spread, central tendency, and presence of any outliers within the data. Subsequently, to account for state-level differences, we grouped the data by `U.S._STATE` and calculated the mean `POPPCT_UC` for each state. This step helped mitigate any bias introduced by multiple entries for the same state, creating a clearer view of state-level trends.
+
+<iframe 
+    src="assets/urban_cluster_population.html" 
+    width="800" 
+    height="500" 
+    frameborder="0">
+</iframe>
+
+
+The box plot displays the distribution of urban cluster population percentages across states. Key observations include:
+- **Skewness**: The distribution exhibits a left skew, indicating that most states have relatively low urban cluster population percentages, with fewer states exhibiting high values.
+- **Spread**: The plot reveals a moderate interquartile range (IQR), with a small number of outliers at the higher end, representing states with exceptionally high urban cluster population percentages.
+- **Central Tendency**: The median value falls closer to the lower end of the range, further emphasizing that most states have low percentages of urban cluster populations.
+
+### How does this relate to our question?
+The left-skewed nature of the data suggests that urban clusters, as a percentage of the total population, are generally less prominent in most states. However, the presence of a few high outliers indicates that certain states are exceptions, potentially due to unique demographic or geographic factors that lead to higher concentrations of populations in urban clusters.
+
+This analysis provides valuable context for understanding the role of urbanization patterns in broader societal or economic outcomes. For instance, if the investigative question centers on the relationship between urbanization and resource distribution, these findings highlight the need to consider the uneven distribution of urban populations when formulating policies or conducting further analysis.
+
+
+## Bivariate Analysis of Total Real GSP and Residential Sector Sales
+
+To analyze the relationship between the total real GSP (`TOTAL.REALGSP`) and residential sector sales (`RES.SALES`), we calculated the average values of these columns for each state. This aggregation was necessary to reduce bias introduced by states with multiple entries in the dataset, ensuring that each state is represented by a single average value for both variables.
+
+We then visualized the relationship between these two columns using a scatter plot. The plot displays the average total real GSP (in billions of dollars) on the x-axis and the average residential sector sales (in megawatt-hours) on the y-axis. 
+
+<iframe 
+    src="assets/bivariate_analysis_gsp_sales.html" 
+    width="800" 
+    height="500" 
+    frameborder="0">
+</iframe>
+
+The scatter plot highlights a clear positive linear trend between the two variables:
+- **Linear Correlation**: States with higher total real GSP values tend to have higher residential sector sales. This is evident from the upward trend in the points.
+- **Variance**: At lower values of total real GSP, the data points are more clustered, indicating less variance. As the GSP values increase, the variance in residential sector sales also increases, suggesting that other factors might influence the sales at higher GSP levels.
+
+### How does this relate to our question?
+This analysis partially answers our investigative question by revealing that economic indicators like the total real GSP are positively associated with electricity usage in the residential sector. As a state's total real GSP increases, its residential sector electricity sales can be expected to increase as well. This insight supports the hypothesis that economic growth is a key driver of energy consumption patterns, which could help stakeholders better allocate resources for states with higher energy demands.
+
+
 
 
 ## Aggregate Statistics
