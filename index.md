@@ -109,12 +109,25 @@ Below displays the head of our cleaned DataFrame:
 
 # Exploratory Data Analysis 
 
+## How We Grouped Our Data
+
+To better analyze the data, we organized it by grouping states and calculating the mean values for relevant columns, including total gross state product (`TOTAL.REALGSP`), percentage of the population in urban clusters (`POPPCT_UC`), and residential electricity sales (`RES.SALES`). This grouping allowed us to create a summary table that highlights average statistics for each state, providing insights into how these variables relate.
+
+Below is a pivot table displaying the average total gross state product, average percentage of the population in urban clusters (`POPPCT_UC`), and average residential electricity sales for each U.S. state. This table reveals patterns and relationships between economic indicators and electricity usage in residential sectors.
+
+<iframe 
+    src="assets/pivot_table.html" 
+    width="800" 
+    height="400" 
+    frameborder="0">
+</iframe>
+
 
 ## Univariate Analysis of Percentage Population in Urban Clusters (POPPCT_UC)
 
 To understand the distribution of the percentage of the population living in urban clusters across U.S. states, we performed a univariate analysis on the `POPPCT_UC` feature. The goal of this analysis was to examine how urban cluster population percentages vary across states and interpret any patterns or trends that emerge.
 
-We first visualized the raw distribution of the `POPPCT_UC` values using a box plot. This plot provided insights into the spread, central tendency, and presence of any outliers within the data. Subsequently, to account for state-level differences, we grouped the data by `U.S._STATE` and calculated the mean `POPPCT_UC` for each state. This step helped mitigate any bias introduced by multiple entries for the same state, creating a clearer view of state-level trends.
+We first visualized the raw distribution of the `POPPCT_UC` values using a box plot. Subsequently, to account for state-level differences, we grouped the data by `U.S._STATE` and calculated the mean `POPPCT_UC` for each state. This step helped mitigate any bias introduced by multiple entries for the same state, creating a clearer view of state-level trends.
 
 <iframe 
     src="assets/urban_cluster_population.html" 
@@ -156,11 +169,6 @@ The scatter plot highlights a clear positive linear trend between the two variab
 This analysis partially answers our investigative question by revealing that economic indicators like the total real GSP are positively associated with electricity usage in the residential sector. As a state's total real GSP increases, its residential sector electricity sales can be expected to increase as well. This insight supports the hypothesis that economic growth is a key driver of energy consumption patterns, which could help stakeholders better allocate resources for states with higher energy demands.
 
 
-
-
-## Aggregate Statistics
-
-
 # Framing a Prediction Problem
 
 ## Prediction Problem
@@ -182,9 +190,9 @@ Features unavailable at the time of prediction, such as future consumption patte
 
 ### Evaluation Metric for Our Model
 - **Chosen Metric**: Mean Absolute Error (MAE)
-- MAE provides a simple and interpretable measure of average prediction error in the same unit as the target variable.
-- Unlike Mean Squared Error (MSE), MAE treats all errors equally, avoiding the disproportionate influence of outliers.
-- Since the focus is on the magnitude of errors rather than their direction, MAE is well-suited for this prediction problem.
+   - MAE provides a simple and interpretable measure of average prediction error in the same unit as the target variable.
+   - Unlike Mean Squared Error (MSE), MAE treats all errors equally, avoiding the disproportionate influence of outliers.
+   - Since the focus is on the magnitude of errors rather than their direction, MAE is well-suited for this prediction problem.
 
 
 
