@@ -37,13 +37,13 @@ The question that this report seeks to answer is the following: **How do a state
 To address the research question, the analysis will focus on the following columns from the dataset:
 
 1. **`TOTAL.REALGSP`**  
-   Represents the inflation-adjusted gross state product (GSP) of a state, encompassing contributions from all industries and sectors. This metric is a key indicator of the economic strength of a state, measured in constant 2009 U.S. dollars.
+   Represents the real or inflation-adjusted gross state product of a state contributed by all industries and sectors in that particular state. This metric is a key indicator of the economic strength of a state, measured in constant 2009 U.S. dollars.
 
 2. **`POPPCT_UC`**  
-   Denotes the percentage of a state's population residing in urban clusters—defined as areas with populations between 2,500 and 50,000. Urban clusters capture demographic shifts and the economic significance of smaller towns and communities.
+   Denotes the percentage of a state's population residing in urban clusters—defined as areas with populations between 2,500 and 50,000. For example, we may imagine these areas to be small towns, townships, code cities, and villages.
 
 3. **`RES.SALES`**  
-   Measures the total electricity consumption in the residential sector of a state, recorded in megawatt-hours. This serves as a proxy for household energy demand and is influenced by economic and demographic factors.
+   Measures the total electricity consumption in the residential sector of a state, recorded in megawatt-hours. 
 
 
 ## Significance of the Analysis
@@ -207,5 +207,7 @@ Features unavailable at the time of prediction, such as future consumption patte
 
 
 # Our Baseline Model
+
+---
 
 # Our Final Model
