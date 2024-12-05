@@ -6,7 +6,7 @@ title: Power Outages
 # Table of Contents
 - [Authors](#authors)
 - [Introduction](#introduction)
-- [Data Cleaning and Exploratory Data Analysis](#cleaning-our-data)
+- [Cleaning our Data](#cleaning-our-data)
 - [Exploratory Data Analysis](#exploratory-data-analysis)
 - [Framing a Prediction Problem](#framing-a-prediction-problem)
 - [Our Baseline Model](#our-baseline-model)
@@ -203,7 +203,6 @@ Features unavailable at the time of prediction, such as future consumption patte
    - Since the focus is on the magnitude of errors rather than their direction, MAE is well-suited for this prediction problem.
 
 
-
 ---
 
 
@@ -216,19 +215,16 @@ Our baseline model is a regression model designed to predict residential electri
 1. **`TOTAL.REALGSP` (Total Real Gross State Product)**:
    - **Type**: Quantitative
    - **Description**: A measure of the total economic output of a state in billions of dollars.
-   - **Reason for Inclusion**: Economic activity is closely tied to energy consumption, as more economically active states tend to consume more electricity.
    - **Transformation**: Standardized using `StandardScaler` to normalize the range.
 
 2. **`POPPCT_UC` (Percent Population in Urban Clusters)**:
    - **Type**: Quantitative
    - **Description**: Represents the percentage of a state’s population living in urban clusters.
-   - **Reason for Inclusion**: Urbanization levels significantly influence residential electricity usage.
    - **Transformation**: Standardized using `StandardScaler`.
 
 3. **`AREAPCT_UC` (Percentage of Urban Land Area)**:
    - **Type**: Quantitative
    - **Description**: The percentage of a state’s land area that is classified as an urban cluster.
-   - **Reason for Inclusion**: Reflects the density and spread of urban areas, which impacts electricity distribution and consumption.
    - **Transformation**: Standardized using `StandardScaler`.
 
 ## Model Description
