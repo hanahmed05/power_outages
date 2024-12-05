@@ -6,10 +6,11 @@ title: Power Outages
 # Table of Contents
 - [Authors](#authors)
 - [Introduction](#introduction)
-- [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis)
+- [Data Cleaning and Exploratory Data Analysis](#cleaning-our-data)
+- [Exploratory Data Analysis](#exploratory-data-analysis)
 - [Framing a Prediction Problem](#framing-a-prediction-problem)
-- [Baseline Model](#baseline-model)
-- [Final Model](#final-model)
+- [Our Baseline Model](#our-baseline-model)
+- [Our Final Model](#our-final-model)
 
 
 # Authors
@@ -23,7 +24,6 @@ In this report, we will explore the **Power Outages** dataset composed by Sayant
 
 The motivation for choosing the power outages dataset stems from our desire to gain a better understanding of how socioeconomic factors play a role in the manufacturing and maintanence of United States' electrical grid. This will help us gain a better understanding of what groups may be at risk of suffering from the increasingly devestating effects of climate change and how utility companies respond to more marginal socioeconomic and geographical groups in the U.S.
 
----
 
 ## Investigative Question
 
@@ -31,8 +31,6 @@ We decided to choose a question which would elucidate how utility companies migh
 
 The question that this report seeks to answer is the following: **How do a state's total gross state product and its population proportion in urban clusters affect the total residential electricity sales?**
 
-
----
 
 ## Key Features and Their Relevance
 
@@ -47,7 +45,6 @@ To address the research question, the analysis will focus on the following colum
 3. **`RES.SALES`**  
    Measures the total electricity consumption in the residential sector of a state, recorded in megawatt-hours. This serves as a proxy for household energy demand and is influenced by economic and demographic factors.
 
----
 
 ## Significance of the Analysis
 
@@ -62,6 +59,8 @@ By integrating these insights, this report aims to provide actionable recommenda
 For more details on the dataset, refer to the original publication:  
 [Power Outages Dataset](https://www.sciencedirect.com/science/article/pii/S2352340918307182)
 
+
+---
 
 
 # Cleaning our Data
@@ -97,7 +96,7 @@ Given this, we decided to remove Alaska from the dataset. Since it contributed o
 
 With Alaska excluded, we proceeded with conditional probabilistic imputation for the `RES.SALES` column. This step ensured that all missing values in this feature were effectively addressed while maintaining the relationships within the data. After this process, the `RES.SALES` feature no longer contained any missing values, enabling us to move confidently to the next stage of exploratory data analysis. 
 
-Below displays the head of our cleaned DataFrame:
+### Below displays the head of our cleaned DataFrame:
 
 <iframe
   src="assets/outages_head.html"
@@ -105,6 +104,9 @@ Below displays the head of our cleaned DataFrame:
   height="300"
   frameborder="0"
 ></iframe>
+
+
+---
 
 
 # Exploratory Data Analysis 
@@ -121,6 +123,7 @@ Below is a pivot table displaying the average total gross state product, average
     height="400" 
     frameborder="0">
 </iframe>
+
 
 
 
@@ -170,6 +173,9 @@ The scatter plot highlights a clear positive linear trend between the two variab
 This analysis partially answers our investigative question by revealing that economic indicators like the total real GSP are positively associated with electricity usage in the residential sector. As a state's total real GSP increases, its residential sector electricity sales can be expected to increase as well. This insight supports the hypothesis that economic growth is a key driver of energy consumption patterns, which could help stakeholders better allocate resources for states with higher energy demands.
 
 
+---
+
+
 # Framing a Prediction Problem
 
 ## Prediction Problem
@@ -200,3 +206,6 @@ Features unavailable at the time of prediction, such as future consumption patte
 ---
 
 
+# Our Baseline Model
+
+# Our Final Model
