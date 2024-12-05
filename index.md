@@ -111,6 +111,7 @@ With Alaska excluded, we proceeded with conditional probabilistic imputation for
 
 # Exploratory Data Analysis 
 
+
 ## How We Grouped Our Data
 
 To better analyze the data, we organized it by grouping states and calculating the mean values for relevant columns, including total gross state product (`TOTAL.REALGSP`), percentage of the population in urban clusters (`POPPCT_UC`), and residential electricity sales (`RES.SALES`). This grouping allowed us to create a summary table that highlights average statistics for each state, providing insights into how these variables relate.
@@ -207,6 +208,45 @@ Features unavailable at the time of prediction, such as future consumption patte
 
 
 # Our Baseline Model
+
+Our baseline model is a regression model designed to predict residential electricity sales (`RES.SALES`) in megawatt-hours. 
+
+## Features in the Model
+
+1. **`TOTAL.REALGSP` (Total Real Gross State Product)**:
+   - **Type**: Quantitative
+   - **Description**: A measure of the total economic output of a state in billions of dollars.
+   - **Reason for Inclusion**: Economic activity is closely tied to energy consumption, as more economically active states tend to consume more electricity.
+   - **Transformation**: Standardized using `StandardScaler` to normalize the range.
+
+2. **`POPPCT_UC` (Percent Population in Urban Clusters)**:
+   - **Type**: Quantitative
+   - **Description**: Represents the percentage of a state’s population living in urban clusters.
+   - **Reason for Inclusion**: Urbanization levels significantly influence residential electricity usage.
+   - **Transformation**: Standardized using `StandardScaler`.
+
+3. **`AREAPCT_UC` (Percentage of Urban Land Area)**:
+   - **Type**: Quantitative
+   - **Description**: The percentage of a state’s land area that is classified as an urban cluster.
+   - **Reason for Inclusion**: Reflects the density and spread of urban areas, which impacts electricity distribution and consumption.
+   - **Transformation**: Standardized using `StandardScaler`.
+
+## Model Description
+
+Our baseline model is implemented as a multiple linear regression model, trained using `sklearn`'s `Pipeline` to streamline the preprocessing and modeling process. The pipeline ensures that feature transformations (e.g., standardization) and the regression model are combined into a single workflow. All features were numerical, so no additional encoding for categorical or ordinal variables was required.
+
+### Evaluation Metrics
+
+1. **Mean Absolute Error (MAE)**:
+   - The mean absolute error for the model is **743,552.41**, indicating the average deviation of predictions from actual values. This large error suggests that the model struggles to capture the variance in electricity sales accurately.
+
+2. **R-squared (R²)**:
+   - The R² score is **0.21**, meaning that only 21% of the variance in residential electricity sales is explained by the model. 
+   
+### Performance Analysis
+
+Our baseline model has lots of areas to improve in its current form. While it uses relevant features, the low R² score and high MAE suggest that it fails to capture critical relationships or additional drivers of electricity consumption. The model's performance is likely hindered by potential **non-linear relationships** between features and the response variable. Therefore, to improve the model, we explored non-linear models and more feature engineering to better capture complex relationships. The baseline model serves as a starting point for further refinement and exploration in our predictive task.
+
 
 ---
 
