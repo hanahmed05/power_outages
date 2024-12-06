@@ -233,17 +233,58 @@ Our baseline model is implemented as a multiple linear regression model, trained
 
 ### Evaluation Metrics
 
-1. **Mean Absolute Error (MAE)**:
+**Mean Absolute Error (MAE)**:
    - The mean absolute error for the model is **743,552.41**, indicating the average deviation of predictions from actual values. This large error suggests that the model struggles to capture the variance in electricity sales accurately.
 
-2. **R-squared (R²)**:
-   - The R² score is **0.21**, meaning that only 21% of the variance in residential electricity sales is explained by the model. 
-   
 ### Performance Analysis
 
-Our baseline model has lots of areas to improve in its current form. While it uses relevant features, the low R² score and high MAE suggest that it fails to capture critical relationships or additional drivers of electricity consumption. The model's performance is likely hindered by potential **non-linear relationships** between features and the response variable. Therefore, to improve the model, we explored non-linear models and more feature engineering to better capture complex relationships. The baseline model serves as a starting point for further refinement and exploration in our predictive task.
+Our baseline model has lots of areas to improve in its current form. While it uses relevant features, the high MAE suggest that it fails to capture critical relationships or additional drivers of electricity consumption. The model's performance is likely hindered by potential **non-linear relationships** between features and the response variable. Therefore, to improve the model, we explored non-linear models and more feature engineering to better capture complex relationships. The baseline model serves as a starting point for further refinement and exploration in our predictive task.
 
 
 ---
 
 # Our Final Model
+
+Our final model is designed to enhance the predictive performance for residential electricity sales (`RES.SALES`) by leveraging transformed features and a carefully tuned multiple linear regression approach. Unlike the baseline model, which used raw features, the final model applies transformations tailored to capture the non-linear relationships in the data.
+
+## Features in the Final Model
+
+The features in the final model are transformations of the original columns, specifically designed to address the underlying relationships between the predictors and the target variable:
+
+1. **`TOTAL.REALGSP` (Total Real Gross State Product)**:
+   - **Transformation**: Left unchanged as its relationship with `RES.SALES` appeared linear.
+
+2. **`POPPCT_UC` (Percent Population in Urban Clusters)**: **FIX?**
+   - **Transformation**: Fractional polynomial transformation \( X^b \), where \( b \) is a tunable parameter.
+
+3. **`AREAPCT_UC` (Urban Cluster Area Percentage)**: **FIX?**
+   - **Transformation**: Exponential transformation \( e^{-aX} \), where \( a \) is a tunable parameter.
+
+
+---
+
+## Modeling Algorithm and Hyperparameter Tuning
+
+The final model employs a **multiple linear regression** algorithm, built using a `ColumnTransformer` to preprocess features and a pipeline to streamline transformations and model fitting. To ensure optimal performance, we tuned two key hyperparameters using **GridSearchCV** with 4-fold cross-validation:
+
+1. **Exponential Decay Parameter (`a`)**: 
+   - Range: \([0.1, 0.5, 1.0, 2.0]\) **FIX**
+   - Best Value: 
+
+2. **Fractional Polynomial Parameter (`b`)**:
+   - Range: \([0.25, 0.5, 0.75, 1.0, 2.0, 3.0]\) **FIX**
+   - Best Value: 
+
+The **GridSearchCV** framework iterated through all possible combinations of the hyperparameters, evaluating each configuration based on **Mean Absolute Error (MAE)**. By focusing on minimizing MAE, we prioritized the model’s ability to provide accurate, interpretable predictions.
+
+---
+
+## Final Model Performance vs. Baseline Model
+
+### Baseline Model Performance:
+While the baseline model had an MAE of 743,552.41, our changes into our final model increased the performance by decrease MAE to __. Therefore, our model improved by ___ % **FIX**
+
+
+### Key Improvements:
+   - The transformations allowed the final model to capture non-linear relationships in the data that the baseline model could not.
+   - The tuned parameters \( a \) and \( b \) significantly improved the model’s flexibility and ability to generalize to unseen data.
