@@ -29,10 +29,10 @@ The motivation for choosing the power outages dataset stems from our desire to g
 
 We decided to choose a question which would elucidate how utility companies might choose which states to expand into and how socioeconomic/geographical features may affect the prevalencce of electricity usage in a state.
 
-The question that this report seeks to answer is the following: **How do a state's total gross state product and its population proportion in urban clusters affect the total residential electricity sales?**
+The question that this report seeks to answer is the following: **How does a state’s total gross state product and the size of its urban clusters, specifically its population proportion in urban clusters and the percent area of the state designated as urban clusters, affect the total residential electricity sales?**
 
 
-## Key Features and Their Relevance
+## Key Data Columns and Their Relevance
 
 To address the research question, the analysis will focus on the following columns from the dataset:
 
@@ -42,9 +42,11 @@ To address the research question, the analysis will focus on the following colum
 2. **`POPPCT_UC`**  
    Denotes the percentage of a state's population residing in urban clusters—defined as areas with populations between 2,500 and 50,000. For example, we may imagine these areas to be small towns, townships, code cities, and villages.
 
-3. **`RES.SALES`**  
-   Measures the total electricity consumption in the residential sector of a state, recorded in megawatt-hours. 
+3. **`AREAPCT_UC`**  
+   Measures the percentage of the total area of a state that is designated as part of urban clusters.
 
+4. **`RES.SALES`**  
+   Measures the total electricity consumption in the residential sector of a state, recorded in megawatt-hours. 
 
 ## Significance of the Analysis
 
@@ -82,7 +84,7 @@ Upon loading the dataset into a DataFrame, the following issues were identified:
 
 Next, we standardized the units of our features, particularly our monetary features, into more comprehensible terms. We put all of the variables measuring total GSP of a state or a sector into units of "billions of dollars" to make our future plots more legible.
 
-Lastly, we checked if any of the columns relevant to our question (`POPPCT_UC`, `TOTAL.REALGSP`, `RES.SALES`, etc.) had any missing values. The `RES.SALES` feature, which describes the electricity consumption in the residential sector in units of megawatt-hours, has 22 missing values.
+Lastly, we checked if any of the columns relevant to our question (`POPPCT_UC`, `TOTAL.REALGSP`, `AREAPCT_UC`, `RES.SALES`, etc.) had any missing values. The `RES.SALES` feature, which describes the electricity consumption in the residential sector in units of megawatt-hours, has 22 missing values.
 
 ## Our Use of Conditional Probabilistic Imputation
 
@@ -114,12 +116,13 @@ With Alaska excluded, we proceeded with conditional probabilistic imputation for
 
 ## How We Grouped Our Data
 
-To better analyze the data, we organized it by grouping states and calculating the mean values for relevant columns, including total gross state product (`TOTAL.REALGSP`), percentage of the population in urban clusters (`POPPCT_UC`), and residential electricity sales (`RES.SALES`). This grouping allowed us to create a summary table that highlights average statistics for each state, providing insights into how these variables relate.
+To better analyze the data, we organized it by grouping states and calculating the mean values for relevant columns, creating a set of interesting aggregates. These aggregates include total gross state product (`TOTAL.REALGSP`), percentage of the population in urban clusters (`POPPCT_UC`), percentage of the land area represented by urban clusters (`AREAPCT_UC`), and residential electricity sales (`RES.SALES`). This grouping provides valuable insights into the relationships between economic, geographic, and energy consumption variables.
 
-Below is a pivot table displaying the average total gross state product, average percentage of the population in urban clusters (`POPPCT_UC`), and average residential electricity sales for each U.S. state. This table reveals patterns and relationships between economic indicators and electricity usage in residential sectors.
+Below is a pivot table displaying the average total gross state product (`TOTAL.REALGSP`), average percentage of the population in urban clusters (`POPPCT_UC`), average percentage of the land area represented by urban clusters (`AREAPCT_UC`), and average residential electricity sales (`RES.SALES`) for each U.S. state. These **interesting aggregates** highlight patterns and relationships between economic indicators, geographic factors, and residential electricity usage.
+
 
 <iframe 
-    src="assets/pivot_table.html" 
+    src="assets/pivot_table_with_area.html" 
     width="800" 
     height="400" 
     frameborder="0">
@@ -144,7 +147,7 @@ We first visualized the raw distribution of the `POPPCT_UC` values using a box p
 
 The box plot displays the distribution of urban cluster population percentages across states. Key observations include:
 - **Skewness**: The distribution exhibits a left skew, indicating that most states have relatively low urban cluster population percentages, with fewer states exhibiting high values.
-- **Spread**: The plot reveals a moderate interquartile range (IQR), with a small number of outliers at the higher end, representing states with exceptionally high urban cluster population percentages.
+- **Spread**: The plot reveals a moderate interquartile range (IQR), with outliers at the higher end, representing states with exceptionally high urban cluster population percentages.
 - **Central Tendency**: The median value falls closer to the lower end of the range, further emphasizing that most states have low percentages of urban cluster populations.
 
 ### How does this relate to our question?
@@ -180,7 +183,7 @@ This analysis partially answers our investigative question by revealing that eco
 # Framing a Prediction Problem
 
 ## Prediction Problem
-The goal of this analysis is to predict the **total residential electricity sales (`RES.SALES`)** for a state based on its **total gross state product (`TOTAL.REALGSP`)** and **population proportion in urban clusters (`POPPCT_UC`)**.
+The goal of this analysis is to predict the **total residential electricity sales (`RES.SALES`)** for a state based on its **total gross state product (`TOTAL.REALGSP`)**, **population proportion in urban clusters (`POPPCT_UC`)** and **percentage of the land area of a state represented by the land area of the urban clusters** (`AREAPCT_UC`).
 
 This is a **regression problem** because the response variable, `RES.SALES`, is a continuous numerical value representing the total residential electricity sales in megawatt-hours (MWh).
 
@@ -192,6 +195,7 @@ This is a **regression problem** because the response variable, `RES.SALES`, is 
 The features used for prediction were carefully selected based on their relevance and availability at the time of prediction:
 - **TOTAL.REALGSP**: Total gross state product is a static economic indicator and a strong predictor of energy consumption. It is readily available for all states.
 - **POPPCT_UC**: The proportion of the population residing in urban clusters reflects urbanization levels, which significantly influence residential electricity usage.
+- **AREAPCT_UC**: The percentage of a state's land area represented by urban clusters provides a measure of the geographic balance between rural and urban regions. This feature captures the extent to which a state's land is dedicated to urbanization, which often correlates with infrastructure density and energy distribution networks.
 
 Features unavailable at the time of prediction, such as future consumption patterns or external economic changes, were excluded to ensure that the model aligns with realistic use cases. This approach ensures the predictions remain practical and deployable in real-world scenarios.
 
@@ -249,24 +253,29 @@ Building on the limitations identified in the baseline model, the final model in
 
 ## Enhanced Feature Transformations
 
-The final model retains the same three features as the baseline model—`TOTAL.REALGSP`, `POPPCT_UC`, and `AREAPCT_UC`—but applies data transformations to improve their representation in the model:
+The final model retains the same three features as the baseline model—`TOTAL.REALGSP`, `POPPCT_UC`, and `AREAPCT_UC`—but applies data transformations to improve their representation in the model. These transformations address the non-linear relationships observed in the bivariate analysis between urban cluster features and residential electricity sales (`RES.SALES`).
+
+### Features and Transformations
 
 1. **`TOTAL.REALGSP` (Total Real Gross State Product)**:
    - **Transformation**: None. The relationship between `TOTAL.REALGSP` and `RES.SALES` is largely linear, so this feature is included without transformation to directly model its influence on electricity sales.
 
 2. **`POPPCT_UC` (Percent Population in Urban Clusters)**:
-   - **Transformation**: Fractional polynomial transformation with \( b = 0.8 \). The proportion of the population residing in urban clusters influences electricity demand non-linearly due to variations in urban density and infrastructure. Applying a fractional polynomial transformation allows the model to more accurately represent this complex relationship.
+   - **Transformation**: Fractional polynomial transformation with \( b = 0.8 \).
+   - **Justification**: From the bivariate scatter plot of `POPPCT_UC` vs. `RES.SALES`, it appears that the trend in the data is positive and increasing but resembles the upper-left bulge in the Tukey Mosteller Bulge Diagram. This suggests a non-linear relationship. To capture this behavior, we define a fractional polynomial transformation of the form \( x^b \) where \( b \) is optimized using GridSearchCV over the range \([0.1, 2.0]\) with steps of 0.1.
 
 3. **`AREAPCT_UC` (Urban Cluster Area Percentage)**:
-   - **Transformation**: Exponential decay transformation with \( a = 1.9 \). Urban land area coverage shows diminishing returns in its impact on electricity sales as urbanization increases. The exponential decay transformation reflects this behavior, ensuring that higher values of `AREAPCT_UC` contribute less aggressively to the prediction.
+   - **Transformation**: Exponential decay transformation with \( a = 1.9 \).
+   - **Justification**: The bivariate scatter plot of `AREAPCT_UC` vs. `RES.SALES` shows a decreasing trend with a lower-left bulge, consistent with the Tukey Mosteller Bulge Diagram. To account for this, we apply a negative exponential transformation of the form \( e^{-a \cdot x} \), where \( a \) is optimized using GridSearchCV over the range \([0.1, 2.0]\) with steps of 0.1.
 
-These transformations are grounded in the data-generating process, as they align with expected patterns in how economic, population, and geographic factors affect residential electricity sales.
+These transformations align with the data-generating process, reflecting the expected non-linear relationships between geographic, population, and economic factors and residential electricity consumption.
+
 
 ---
 
 ## Model Description and Hyperparameter Optimization
 
-The final model is implemented as a multiple linear regression model with feature transformations handled by a `ColumnTransformer`. To fine-tune the transformations, we employed **GridSearchCV** to optimize two hyperparameters:
+The final model is implemented as a multiple linear regression model with feature transformations using `FunctionTransformer()` within an SKLearn `ColumnTransformer`. To fine-tune the transformations, we employed **GridSearchCV** to optimize two hyperparameters:
 - **Exponential decay parameter (`a`)** for the transformation of `AREAPCT_UC`:
   - Range: \( [0.1, 2.0) \) in increments of 0.1.
   - Optimal value: \( a = 1.9 \).
