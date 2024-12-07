@@ -30,7 +30,7 @@ The motivation for choosing the power outages dataset stems from our desire to g
 
 ## Investigative Question
 
-We decided to choose a question which would elucidate how utility companies might choose which states to expand into and how socioeconomic/geographical features may affect the prevalencce of electricity usage in a state.
+We decided to choose a question which would elucidate how utility companies might choose which states to expand into and how socioeconomic/geographical features may affect the prevalence of electricity usage in a state.
 
 The question that this report seeks to answer is the following: **How does a state’s total gross state product and the size of its urban clusters, specifically its population proportion in urban clusters and the percent area of the state designated as urban clusters, affect the total residential electricity sales?**
 
@@ -82,7 +82,7 @@ Upon loading the dataset into a DataFrame, the following issues were identified:
 **Action Taken to Clean Data:**
 - Removed the `variables` and `OBS` columns using the `.drop()` method.
 - Deleted the first row to ensure the dataset contained only relevant data entries.
-- Created a new dataframe that has the correct datatypes assigned to each feature using the `convert_to_float` function
+- Created a new dataframe that has the correct datatypes assigned to each feature using a custom-defined `convert_to_float()` function
 
 
 Next, we standardized the units of our features, particularly our monetary features, into more comprehensible terms. We put all of the variables measuring total GSP of a state or a sector into units of "billions of dollars" to make our future plots more legible.
@@ -119,7 +119,7 @@ With Alaska excluded, we proceeded with conditional probabilistic imputation for
 
 ## How We Grouped Our Data
 
-To better analyze the data, we organized it by grouping states and calculating the mean values for relevant columns, creating a set of interesting aggregates. These aggregates include total gross state product (`TOTAL.REALGSP`), percentage of the population in urban clusters (`POPPCT_UC`), percentage of the land area represented by urban clusters (`AREAPCT_UC`), and residential electricity sales (`RES.SALES`). This grouping provides valuable insights into the relationships between economic, geographic, and energy consumption variables.
+To better analyze the data, we organized it by grouping states and calculating the mean values for relevant columns, creating a set of interesting aggregates. These aggregates include total gross state product (`TOTAL.REALGSP`), percentage of the population in urban clusters (`POPPCT_UC`), percentage of the land area represented by urban clusters (`AREAPCT_UC`), and residential electricity sales (`RES.SALES`). This grouping provides valuable insights into the relationships between economic, geographic, and energy consumption variables while removing the frequency bias caused by over and underreporting certain states throughout the dataset. For instance, the state of Texas has considerably more entires than the state of Vermont in the original outages dataset. This would shift the peaks of our relevant distributions towards overreported states, which would not give us an accurate understanding of the relationship between these variables. Thus, we will perform a `groupby()` operation on our relevant columns with respect to the state, allowing us to look past the bias introduced with the frequency of entries per state.
 
 Below is a pivot table displaying the average total gross state product (`TOTAL.REALGSP`), average percentage of the population in urban clusters (`POPPCT_UC`), average percentage of the land area represented by urban clusters (`AREAPCT_UC`), and average residential electricity sales (`RES.SALES`) for each U.S. state. These **interesting aggregates** highlight patterns and relationships between economic indicators, geographic factors, and residential electricity usage.
 
@@ -179,7 +179,11 @@ The scatter plot highlights a clear positive linear trend between the two variab
 ### How does this relate to our question?
 This analysis partially answers our investigative question by revealing that economic indicators like the total real GSP are positively associated with electricity usage in the residential sector. As a state's total real GSP increases, its residential sector electricity sales can be expected to increase as well. This insight supports the hypothesis that economic growth is a key driver of energy consumption patterns, which could help stakeholders better allocate resources for states with higher energy demands.
 
+## A Note on the Bivariate Relationships Between the Urban Cluster Features and Residential Sector Sales
 
+Upon plotting `AREAPCT_UC` vs. `RES.SALES` and `POPPCT_UC` vs. `RES.SALES`, we found that the relationships between these sets of variables could potentially be non-linear. 
+
+For instance, for the the trend between `POPPCT_UC` and `RES.SALES`, the residential sales fall in a descreasing manner for the majority of the bivariate distribution. However, the rate of decrease itself seems to decrease. Furthermore, for the trend between `AREAPCT_UC` and `RES.SALES`, we could see that the residential sector sales consistently increase with respect to the percent area of a state designated as urban clusters, although the rate increase appears to decrease slightly. It is likely that for both of the aforementioned relationships, we will have to linearize this relationship in order to fully utilize them in a linear regressor.
 ---
 
 
@@ -188,7 +192,7 @@ This analysis partially answers our investigative question by revealing that eco
 ## Prediction Problem
 The goal of this analysis is to predict the **total residential electricity sales (`RES.SALES`)** for a state based on its **total gross state product (`TOTAL.REALGSP`)**, **population proportion in urban clusters (`POPPCT_UC`)** and **percentage of the land area of a state represented by the land area of the urban clusters** (`AREAPCT_UC`).
 
-This is a **regression problem** because the response variable, `RES.SALES`, is a continuous numerical value representing the total residential electricity sales in megawatt-hours (MWh).
+This is a **regression problem** because the response variable, `RES.SALES`, is a continuous numerical value representing the total residential electricity sales in megawatt-hours (MWh). In particular, we will construct a multilinear regression model to relate our chosen features to the residential sector sales of energy.
 
 ### Response Variable
 - **Response Variable**: `RES.SALES` (Total Residential Electricity Sales in Megawatt-Hours)
@@ -206,7 +210,7 @@ Features unavailable at the time of prediction, such as future consumption patte
 ### Evaluation Metric for Our Model
 - **Chosen Metric**: Mean Absolute Error (MAE)
    - MAE provides a simple and interpretable measure of average prediction error in the same unit as the target variable.
-   - Unlike Mean Squared Error (MSE), MAE treats all errors equally, avoiding the disproportionate influence of outliers.
+   - Unlike Mean Squared Error (MSE), MAE treats all errors equally, avoiding the disproportionate influence of outliers, of which there are many in the bivariate distributions we modelled.
    - Since the focus is on the magnitude of errors rather than their direction, MAE is well-suited for this prediction problem.
 
 
@@ -215,28 +219,25 @@ Features unavailable at the time of prediction, such as future consumption patte
 
 # Our Baseline Model
 
-Our baseline model is a regression model designed to predict residential electricity sales (`RES.SALES`) in megawatt-hours. 
+Our baseline model is a multilinear regression model designed to predict residential electricity sales (`RES.SALES`) in megawatt-hours given input variables of the total real GSP of a state (`TOTAL.REALGSP`), the percent of a state's population residing in urban clusters (`POPPCT_UC`), and the percent of a state's total area designated as urban clusters (`AREAPCT_UC`). 
 
 ## Features in the Model
 
 1. **`TOTAL.REALGSP` (Total Real Gross State Product)**:
    - **Type**: Quantitative
    - **Description**: A measure of the total economic output of a state in billions of dollars.
-   - **Transformation**: Standardized using `StandardScaler` to normalize the range.
 
 2. **`POPPCT_UC` (Percent Population in Urban Clusters)**:
    - **Type**: Quantitative
    - **Description**: Represents the percentage of a state’s population living in urban clusters.
-   - **Transformation**: Standardized using `StandardScaler`.
 
 3. **`AREAPCT_UC` (Percentage of Urban Land Area)**:
    - **Type**: Quantitative
    - **Description**: The percentage of a state’s land area that is classified as an urban cluster.
-   - **Transformation**: Standardized using `StandardScaler`.
 
 ## Model Description
 
-Our baseline model is implemented as a multiple linear regression model, trained using `sklearn`'s `Pipeline` to streamline the preprocessing and modeling process. The pipeline ensures that feature transformations (e.g., standardization) and the regression model are combined into a single workflow. All features were numerical, so no additional encoding for categorical or ordinal variables was required.
+Our baseline model is implemented as a multiple linear regression model, trained using `sklearn`'s `Pipeline`. In this scenario, we implemented the `Pipeline` out of best practice, but if we were to use a transformation in the future, the `Pipeline` would serve to streamline the preprocessing and modeling process. All features were numerical, so no additional encoding for categorical or ordinal variables was required.
 
 ### Evaluation Metrics
 
