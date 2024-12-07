@@ -245,46 +245,49 @@ Our baseline model has lots of areas to improve in its current form. While it us
 
 # Our Final Model
 
-Our final model is designed to enhance the predictive performance for residential electricity sales (`RES.SALES`) by leveraging transformed features and a carefully tuned multiple linear regression approach. Unlike the baseline model, which used raw features, the final model applies transformations tailored to capture the non-linear relationships in the data.
+Building on the limitations identified in the baseline model, the final model introduces feature transformations to better capture the underlying non-linear relationships between the predictors and residential electricity sales (`RES.SALES`). By leveraging transformations and hyperparameter optimization, the final model significantly improves predictive accuracy.
 
-## Features in the Final Model
+## Enhanced Feature Transformations
 
-The features in the final model are transformations of the original columns, specifically designed to address the underlying relationships between the predictors and the target variable:
+The final model retains the same three features as the baseline model—`TOTAL.REALGSP`, `POPPCT_UC`, and `AREAPCT_UC`—but applies data transformations to improve their representation in the model:
 
 1. **`TOTAL.REALGSP` (Total Real Gross State Product)**:
-   - **Transformation**: Left unchanged as its relationship with `RES.SALES` appeared linear.
+   - **Transformation**: None. The relationship between `TOTAL.REALGSP` and `RES.SALES` is largely linear, so this feature is included without transformation to directly model its influence on electricity sales.
 
-2. **`POPPCT_UC` (Percent Population in Urban Clusters)**: **FIX?**
-   - **Transformation**: Fractional polynomial transformation \( X^b \), where \( b \) is a tunable parameter.
+2. **`POPPCT_UC` (Percent Population in Urban Clusters)**:
+   - **Transformation**: Fractional polynomial transformation with \( b = 0.8 \). The proportion of the population residing in urban clusters influences electricity demand non-linearly due to variations in urban density and infrastructure. Applying a fractional polynomial transformation allows the model to more accurately represent this complex relationship.
 
-3. **`AREAPCT_UC` (Urban Cluster Area Percentage)**: **FIX?**
-   - **Transformation**: Exponential transformation \( e^{-aX} \), where \( a \) is a tunable parameter.
+3. **`AREAPCT_UC` (Urban Cluster Area Percentage)**:
+   - **Transformation**: Exponential decay transformation with \( a = 1.9 \). Urban land area coverage shows diminishing returns in its impact on electricity sales as urbanization increases. The exponential decay transformation reflects this behavior, ensuring that higher values of `AREAPCT_UC` contribute less aggressively to the prediction.
+
+These transformations are grounded in the data-generating process, as they align with expected patterns in how economic, population, and geographic factors affect residential electricity sales.
+
+---
+
+## Model Description and Hyperparameter Optimization
+
+The final model is implemented as a multiple linear regression model with feature transformations handled by a `ColumnTransformer`. To fine-tune the transformations, we employed **GridSearchCV** to optimize two hyperparameters:
+- **Exponential decay parameter (`a`)** for the transformation of `AREAPCT_UC`:
+  - Range: \( [0.1, 2.0) \) in increments of 0.1.
+  - Optimal value: \( a = 1.9 \).
+- **Fractional polynomial parameter (`b`)** for the transformation of `POPPCT_UC`:
+  - Range: \( [0.1, 2.0) \) in increments of 0.1.
+  - Optimal value: \( b = 0.8 \).
+
+### GridSearchCV Implementation:
+The `GridSearchCV` framework performed 4-fold cross-validation to evaluate all combinations of the hyperparameters, using **mean absolute error (MAE)** as the scoring metric. This ensured that the selected parameters minimized prediction errors on unseen data.
+
+## Final Model Performance
+
+**Mean Absolute Error (MAE):** 565,446.19
+
+The final model demonstrates a substantial reduction in MAE compared to the baseline model (743,552.41). With out file model, we achieved a 23.9% reduction in mean absolute error (MAE) compared to the baseline model, highlighting a significant improvement in prediction accuracy. 
+
+## Conclusion
+
+The final model successfully addresses the limitations of the baseline by incorporating domain-specific feature transformations and leveraging hyperparameter optimization. The resulting decrease in mean absolute error confirms the effectiveness of these changes, establishing the final model as a more robust tool for predicting residential electricity sales. While further improvements may involve additional features or non-linear algorithms, this model provides a strong foundation for understanding the relationships between economic, geographic, and population factors in energy consumption.
 
 
 ---
 
-## Modeling Algorithm and Hyperparameter Tuning
 
-The final model employs a **multiple linear regression** algorithm, built using a `ColumnTransformer` to preprocess features and a pipeline to streamline transformations and model fitting. To ensure optimal performance, we tuned two key hyperparameters using **GridSearchCV** with 4-fold cross-validation:
-
-1. **Exponential Decay Parameter (`a`)**: 
-   - Range: \([0.1, 0.5, 1.0, 2.0]\) **FIX**
-   - Best Value: 
-
-2. **Fractional Polynomial Parameter (`b`)**:
-   - Range: \([0.25, 0.5, 0.75, 1.0, 2.0, 3.0]\) **FIX**
-   - Best Value: 
-
-The **GridSearchCV** framework iterated through all possible combinations of the hyperparameters, evaluating each configuration based on **Mean Absolute Error (MAE)**. By focusing on minimizing MAE, we prioritized the model’s ability to provide accurate, interpretable predictions.
-
----
-
-## Final Model Performance vs. Baseline Model
-
-### Baseline Model Performance:
-While the baseline model had an MAE of 743,552.41, our changes into our final model increased the performance by decrease MAE to __. Therefore, our model improved by ___ % **FIX**
-
-
-### Key Improvements:
-   - The transformations allowed the final model to capture non-linear relationships in the data that the baseline model could not.
-   - The tuned parameters \( a \) and \( b \) significantly improved the model’s flexibility and ability to generalize to unseen data.
