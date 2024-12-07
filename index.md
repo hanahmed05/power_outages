@@ -2,6 +2,9 @@
 layout: default
 title: Power Outages
 ---
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 
 # Table of Contents
 - [Authors](#authors)
@@ -262,7 +265,7 @@ The final model retains the same three features as the baseline model—`TOTAL.R
 
 2. **`POPPCT_UC` (Percent Population in Urban Clusters)**:
    - **Transformation**: Fractional polynomial transformation with $$b = 0.8$$.
-   - **Justification**: From the bivariate scatter plot of `POPPCT_UC` vs. `RES.SALES`, it appears that the trend in the data is positive and increasing but resembles the upper-left bulge in the Tukey Mosteller Bulge Diagram. This suggests a non-linear relationship. To capture this behavior, we define a fractional polynomial transformation of the form $$x^b$$, where $$b$$ is optimized using `GridSearchCV` over the range $$[0.1, 2.0]$ with steps of $$0.1$$.
+   - **Justification**: From the bivariate scatter plot of `POPPCT_UC` vs. `RES.SALES`, it appears that the trend in the data is positive and increasing but resembles the upper-left bulge in the Tukey Mosteller Bulge Diagram. This suggests a non-linear relationship. To capture this behavior, we define a fractional polynomial transformation of the form $$x^b$$, where $$b$$ is optimized using `GridSearchCV` over the range $$[0.1, 2.0]$$ with steps of $$0.1$$.
 
 3. **`AREAPCT_UC` (Urban Cluster Area Percentage)**:
    - **Transformation**: Exponential decay transformation with $$a = 1.9$$.
