@@ -261,12 +261,12 @@ The final model retains the same three features as the baseline model—`TOTAL.R
    - **Transformation**: None. The relationship between `TOTAL.REALGSP` and `RES.SALES` is largely linear, so this feature is included without transformation to directly model its influence on electricity sales.
 
 2. **`POPPCT_UC` (Percent Population in Urban Clusters)**:
-   - **Transformation**: Fractional polynomial transformation with $b = 0.8$.
-   - **Justification**: From the bivariate scatter plot of `POPPCT_UC` vs. `RES.SALES`, it appears that the trend in the data is positive and increasing but resembles the upper-left bulge in the Tukey Mosteller Bulge Diagram. This suggests a non-linear relationship. To capture this behavior, we define a fractional polynomial transformation of the form $x^b$, where $b$ is optimized using `GridSearchCV` over the range $[0.1, 2.0]$ with steps of $0.1$.
+   - **Transformation**: Fractional polynomial transformation with $$b = 0.8$$.
+   - **Justification**: From the bivariate scatter plot of `POPPCT_UC` vs. `RES.SALES`, it appears that the trend in the data is positive and increasing but resembles the upper-left bulge in the Tukey Mosteller Bulge Diagram. This suggests a non-linear relationship. To capture this behavior, we define a fractional polynomial transformation of the form $$x^b$$, where $$b$$ is optimized using `GridSearchCV` over the range $$[0.1, 2.0]$ with steps of $$0.1$$.
 
 3. **`AREAPCT_UC` (Urban Cluster Area Percentage)**:
-   - **Transformation**: Exponential decay transformation with $a = 1.9$.
-   - **Justification**: The bivariate scatter plot of `AREAPCT_UC` vs. `RES.SALES` shows a decreasing trend with a lower-left bulge, consistent with the Tukey Mosteller Bulge Diagram. To account for this, we apply a negative exponential transformation of the form $e^{-a \cdot x}$, where $a$ is optimized using `GridSearchCV` over the range $[0.1, 2.0]$ with steps of $0.1$.
+   - **Transformation**: Exponential decay transformation with $$a = 1.9$$.
+   - **Justification**: The bivariate scatter plot of `AREAPCT_UC` vs. `RES.SALES` shows a decreasing trend with a lower-left bulge, consistent with the Tukey Mosteller Bulge Diagram. To account for this, we apply a negative exponential transformation of the form $$e^{-a \cdot x}$$, where $$a$$ is optimized using `GridSearchCV` over the range $$[0.1, 2.0]$$ with steps of $$0.1$$.
 
 These transformations align with the data-generating process, reflecting the expected non-linear relationships between geographic, population, and economic factors and residential electricity consumption.
 
@@ -290,7 +290,7 @@ The `GridSearchCV` framework performed 4-fold cross-validation to evaluate all c
 
 **Mean Absolute Error (MAE):** 565,446.19
 
-The final model demonstrates a substantial reduction in MAE compared to the baseline model (743,552.41). With out file model, we achieved a 23.9% reduction in mean absolute error (MAE) compared to the baseline model, highlighting a significant improvement in prediction accuracy. 
+The final model demonstrates a substantial reduction in MAE compared to the baseline model (743,552.41). With out file model, we achieved a **23.9%** reduction in mean absolute error (MAE) compared to the baseline model, highlighting a significant improvement in prediction accuracy. 
 
 ## Conclusion
 
