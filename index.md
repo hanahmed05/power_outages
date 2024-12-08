@@ -184,6 +184,8 @@ This analysis partially answers our investigative question by revealing that eco
 Upon plotting `AREAPCT_UC` vs. `RES.SALES` and `POPPCT_UC` vs. `RES.SALES`, we found that the relationships between these sets of variables could potentially be non-linear. 
 
 For instance, for the the trend between `POPPCT_UC` and `RES.SALES`, the residential sales fall in a descreasing manner for the majority of the bivariate distribution. However, the rate of decrease itself seems to decrease. Furthermore, for the trend between `AREAPCT_UC` and `RES.SALES`, we could see that the residential sector sales consistently increase with respect to the percent area of a state designated as urban clusters, although the rate increase appears to decrease slightly. It is likely that for both of the aforementioned relationships, we will have to linearize this relationship in order to fully utilize them in a linear regressor.
+
+
 ---
 
 
